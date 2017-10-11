@@ -11,4 +11,11 @@
 	<div class="top-bar">
 		<a class="menu-bars"></a>
 		<a class="logo" href="./"></a>
+
+		<div class="user-control">
+			<ul>
+				<li><a href="login.php">Login</a></li>
+				<li><a href="register.php">Register</a></li>
+			</ul>
+		</div>
 	</div>
