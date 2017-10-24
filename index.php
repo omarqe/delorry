@@ -1,4 +1,8 @@
-<?php require_once('header.php'); ?>
+<?php
+require_once('includes/load.php');
+require_once('process.php');
+require_once('header.php');
+?>
 
 	<div class="header">
 		<div class="header-overlay"></div>
@@ -7,12 +11,30 @@
 				<h4>Moving to a new house?</h4>
 				<h1>Book our service now.</h1>
 				<div class="forms">
+					<?php
+					if( isset($_GET['msg']) && $msg_code = $_GET['msg'] ){
+						$messages = array(
+							'same_place' => '<div class="alert alert-warning">You cannot book our lorry for the same place.</div>',
+							'login_error' => '<div class="alert alert-warning">Please login first to book.</div>',
+							'success' => '<div class="alert alert-success">Booking success.</div>',
+							'error' => '<div class="alert alert-danger">We cannot place your booking right now. Please try again later.</div>'
+						);
+
+						if ( array_key_exists($msg_code, $messages) )
+							echo $messages[$msg_code];
+					}
+					?>
+					<form method="post">
 					<div class="input-block">
 						<label for="date">Date</label>
-						<select class="form-control" id="date">
+						<select class="form-control" id="date" name="date" required>
 							<?php
-							for ( $i=1; $i<=30; $i++ ){
-								printf( '<option>%d November 2017</option>', $i );
+							$date = time();
+							$maximum_days = get_settings( 'max_booking_days' );
+
+							for ( $i=1; $i<=$maximum_days; $i++ ){
+								printf( '<option value="%1$s">%2$s</option>', date('d/m/y'), date('j F Y', $date) );
+								$date += 86400;
 							}
 							?>
 						</select>
@@ -20,10 +42,10 @@
 
 					<div class="input-block">
 						<label for="from">From</label>
-						<select class="form-control" id="from">
+						<select class="form-control" id="from" name="from" required>
 							<?php
-							foreach ( $states = ['Perlis', 'Kedah', 'Penang', 'Kuala Lumpur'] as $state ){
-								printf( '<option value="%1$s">%2$s</option>', strtolower($state), ucfirst($state) );
+							foreach ( $states = get_places() as $placeid => $label ){
+								printf( '<option value="%1$s">%2$s</option>', $placeid, ucfirst($label) );
 							}
 							?>
 						</select>
@@ -31,10 +53,10 @@
 
 					<div class="input-block">
 						<label for="to">To</label>
-						<select class="form-control" id="to">
+						<select class="form-control" id="to" name="to" required>
 							<?php
-							foreach ( $states as $state ){
-								printf( '<option value="%1$s">%2$s</option>', strtolower($state), ucfirst($state) );
+							foreach ( $states as $placeid => $label ){
+								printf( '<option value="%1$s">%2$s</option>', $placeid, ucfirst($label) );
 							}
 							?>
 						</select>
@@ -42,9 +64,9 @@
 
 					<div class="input-block">
 						<label for="vehicle">Vehicle Type</label>
-						<select class="form-control" id="vehicle">
+						<select class="form-control" id="vehicle" name="vehicle" required>
 							<?php
-							foreach ( ['Pickup Truck', '4x4'] as $truck ){
+							foreach ( get_settings('vehicles') as $truck ){
 								printf( '<option value="%1$s">%2$s</option>', strtolower($truck), ucfirst($truck) );
 							}
 							?>
@@ -54,9 +76,11 @@
 					<div class="clearfix"></div>
 
 					<div class="form-group" style="display:block; text-align:center; padding:10px 0 !important">
+						<input type="hidden" name="action" value="book">
 						<button class="btn btn-success btn-lg">Book Now</button>
 					</div>
-				</div>
+					</form>
+				</div> <!-- /.forms -->
 			</div>
 		</div>
 	</div>

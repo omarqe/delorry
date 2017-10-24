@@ -14,8 +14,15 @@
 
 		<div class="user-control">
 			<ul>
+			<?php if ( !is_loggedin() ): ?>
 				<li><a href="login.php">Login</a></li>
 				<li><a href="register.php">Register</a></li>
+			<?php elseif (is_loggedin() && is_admin()): ?>
+				<li><a href="./admin/">Administrator</a></li>
+				<li><a href="process.php?action=logout">Logout</a></li>
+			<?php elseif (is_loggedin()): ?>
+				<li><a href="process.php?action=logout">Logout</a></li>
+			<?php endif; ?>
 			</ul>
 		</div>
 	</div>

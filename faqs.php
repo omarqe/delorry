@@ -1,4 +1,7 @@
-<?php require_once('header.php'); ?>
+<?php
+require_once('includes/load.php');
+require_once('header.php');
+?>
 
 	<section class="single">
 		<div class="content-white">
