@@ -1,4 +1,4 @@
-Tutorial install
+# Installation Tutorial
 
 1. Install XAMPP (Google tutorial camna nak install XAMPP)
 2. Start Apache & MySQL on XAMPP Control Panel
